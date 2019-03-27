@@ -8,8 +8,13 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './services/auth.service';
+import { AjoutModificationClientComponent } from './ajout-modification-client/ajout-modification-client.component';
+import {ClientService} from './services/client.service';
+import { DashboardClientComponent } from './dashboard-client/dashboard-client.component';
 
 const appRoutes: Routes = [
+  { path: 'client', component: AjoutModificationClientComponent },
+  { path: 'clients', component: DashboardClientComponent },
   { path: '', component: SigninComponent }
 ];
 
@@ -18,7 +23,9 @@ const appRoutes: Routes = [
     AppComponent,
     HeaderComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
+    AjoutModificationClientComponent,
+    DashboardClientComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +33,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, ClientService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
