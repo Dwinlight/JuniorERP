@@ -11,6 +11,7 @@ import {AuthService} from './services/auth.service';
 import { AjoutModificationClientComponent } from './ajout-modification-client/ajout-modification-client.component';
 import {ClientService} from './services/client.service';
 import { DashboardClientComponent } from './dashboard-client/dashboard-client.component';
+import { SingleClientComponent } from './single-client/single-client.component';
 
 const appRoutes: Routes = [
   { path: 'client', component: AjoutModificationClientComponent },
@@ -25,7 +26,8 @@ const appRoutes: Routes = [
     SignupComponent,
     SigninComponent,
     AjoutModificationClientComponent,
-    DashboardClientComponent
+    DashboardClientComponent,
+    SingleClientComponent
   ],
   imports: [
     BrowserModule,
