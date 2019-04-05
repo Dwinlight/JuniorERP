@@ -6,6 +6,7 @@ import DataSnapshot = firebase.database.DataSnapshot;
 
 @Injectable()
 export class ClientService {
+  db = firebase.firestore();
   clients: ClientDTO[] = [];
   clientsSubject = new Subject<ClientDTO[]>();
   constructor() {
@@ -14,13 +15,40 @@ export class ClientService {
   emitClients() {
     this.clientsSubject.next(this.clients);
   }
-  saveClients() {
-    firebase.database().ref('/').set(this.clients);
+  saveClients(newClient: ClientDTO) {
+    // firebase.database().ref('/').set(this.clients);
+    this.db.collection('clients').add({
+      entreprise: newClient.entreprise,
+      interlocuteur: newClient.interlocuteur,
+      mail: newClient.mail,
+      telephone: newClient.telephone,
+      adresse: newClient.adresse,
+      remarque: newClient.remarque
+    })
+      .then(function(docRef) {
+        console.log('Document written with ID: ', docRef.id);
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
   }
   getClients() {
-    firebase.database().ref('/').on('value', (data: DataSnapshot) => {
-      this.clients = data.val() ? data.val() : [];
-      this.emitClients();
+    // firebase.database().ref('/').on('value', (data: DataSnapshot) => {
+    //  this.clients = data.val() ? data.val() : [];
+    //  this.emitClients();
+    // });
+    this.db.collection('clients').get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        const client = new ClientDTO();
+        client.remarque = doc.get('remarque');
+        client.adresse = doc.get('adresse');
+        client.telephone = doc.get('telephone');
+        client.mail = doc.get('mail');
+        client.interlocuteur = doc.get('interlocuteur');
+        client.entreprise = doc.get('entreprise');
+        this.clients.push(client);
+      });
     });
   }
   getSingleClient(id: number) {
@@ -38,7 +66,7 @@ export class ClientService {
   }
   createNewClient(newClient: ClientDTO) {
     this.clients.push(newClient);
-    this.saveClients();
+    this.saveClients(newClient);
     this.emitClients();
   }
   removeBook(client: ClientDTO) {
@@ -50,7 +78,7 @@ export class ClientService {
       }
     );
     this.clients.splice(bookIndexToRemove, 1);
-    this.saveClients();
+    this.saveClients(client);
     this.emitClients();
   }
 }

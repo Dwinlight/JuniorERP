@@ -10,16 +10,19 @@ import {Router} from '@angular/router';
   styleUrls: ['./dashboard-client.component.css']
 })
 export class DashboardClientComponent implements OnInit, OnDestroy {
+  index: number;
+  isSingle: boolean;
   clients: ClientDTO[];
   clientsSubscription: Subscription;
+  currentClient: ClientDTO;
 
   constructor(private clientsService: ClientService, private  router: Router) { }
 
   ngOnInit() {
     this.clientsSubscription = this.clientsService.clientsSubject.subscribe(
       (clients: ClientDTO[]) => {
+        this.isSingle = false;
         this.clients = clients;
-        console.log(clients);
       }
     );
     this.clientsService.emitClients();
@@ -33,8 +36,14 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
     this.clientsService.removeBook(client);
   }
 
-  onViewClient(id: number) {
-    this.router.navigate(['/books', 'view', id]);
+  onViewClient(index: number, client: ClientDTO) {
+    this.index = index;
+    this.isSingle = true;
+    this.currentClient = this.clients[index];
+  }
+
+  onBackDashboard() {
+    this.isSingle = false;
   }
   ngOnDestroy(): void {
     this.clientsSubscription.unsubscribe();
