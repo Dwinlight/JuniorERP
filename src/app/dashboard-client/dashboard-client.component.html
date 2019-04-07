@@ -1,11 +1,11 @@
-<div *ngIf="!isSingle" class="row">
+<div *ngIf="index === null" class="row">
   <div class="col-xs-12">
     <h2>Vos livres</h2>
     <div class="list-group">
       <button
         class="list-group-item"
         *ngFor="let client of clients; let i = index"
-        (click)="onViewClient(i, client)">
+        (click)="onViewClient(i)">
         <h3 class="list-group-item-heading">
           {{ client.entreprise }}
           <button class="btn btn-default pull-right" (click)="onDeleteClient(client)">
@@ -19,6 +19,6 @@
   </div>
 </div>
 
-<div *ngIf="isSingle">
-  <app-single-client>[currentClient]="currentClient"</app-single-client>
+<div *ngFor="let client of clients; let i = index">
+  <app-single-client *ngIf="index===i" [client]="client" (backEvent)='onBackDashboard()'> </app-single-client>
 </div>

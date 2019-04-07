@@ -16,6 +16,7 @@ import { SingleClientComponent } from './dashboard-client/single-client/single-c
 const appRoutes: Routes = [
   { path: 'client', component: AjoutModificationClientComponent },
   { path: 'clients', component: DashboardClientComponent },
+  { path: 'single-client/:index', component: SingleClientComponent },
   { path: '', component: SigninComponent }
 ];
 

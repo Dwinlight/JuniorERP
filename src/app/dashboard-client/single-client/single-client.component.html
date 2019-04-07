@@ -1,3 +1,19 @@
-<p>
-  {{client.entreprise}}
-</p>
+<h1>Détails client</h1>
+
+<table class="table">
+  <tbody>
+  <tr>
+    <td><strong>Entreprise: </strong>{{client.entreprise}}</td>
+    <td><strong> Interlocuteur: </strong>{{client.interlocuteur}}</td>
+    <td><strong>Adresse: </strong>{{client.adresse}}</td>
+  </tr>
+  <tr>
+    <td><strong>Mail: </strong>{{client.mail}}</td>
+    <td><strong>Téléphone:</strong> {{client.telephone}}</td>
+  </tr>
+
+  </tbody>
+</table>
+
+
+<button class="btn btn-primary" (click)="back(true)">Retour à la liste des clients</button>
