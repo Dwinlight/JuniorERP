@@ -13,7 +13,8 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   index: number = null;
   clients: ClientDTO[];
   clientsSubscription: Subscription;
-  currentClient: ClientDTO;
+  isCreated = false;
+  isModify = false;
 
   constructor(private clientsService: ClientService, private  router: Router) { }
 
@@ -27,12 +28,10 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   }
 
   onNewClient() {
-    this.router.navigate(['/client']);
+    this.isCreated = true;
+    // this.router.navigate(['/client']);
   }
 
-  onDeleteClient(client: ClientDTO) {
-    this.clientsService.removeBook(client);
-  }
 
   onViewClient(index: number) {
     this.index = index;
@@ -41,7 +40,15 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   onBackDashboard() {
     console.log('back');
     this.index = null;
+    this.isCreated = false;
+    this.isModify = false;
   }
+  onModify(index: number) {
+    this.index = index;
+    this.isModify = true;
+    this.isCreated = false;
+  }
+
   ngOnDestroy(): void {
     this.clientsSubscription.unsubscribe();
   }

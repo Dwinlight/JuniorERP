@@ -1,4 +1,4 @@
-<div *ngIf="index === null" class="row">
+<div *ngIf="index === null && isCreated === false" class="row">
   <div class="col-xs-12">
     <h2>Vos livres</h2>
     <div class="list-group">
@@ -21,4 +21,12 @@
 
 <div *ngFor="let client of clients; let i = index">
   <app-single-client *ngIf="index===i" [client]="client" (backEvent)='onBackDashboard()'> </app-single-client>
+</div>
+
+<div *ngFor="let client of clients; let j = index">
+  <app-ajout-modification-client *ngIf="index===j && isModify == true" [client]="client" (modifyEvent)='onModify(j)'> </app-ajout-modification-client>
+</div>
+
+<div *ngIf = "isCreated">
+  <app-ajout-modification-client (backEvent)='onBackDashboard()'></app-ajout-modification-client>
 </div>

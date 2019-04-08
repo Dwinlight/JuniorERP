@@ -8,11 +8,10 @@
     <ul class="nav navbar-nav navbar-right">
 
       <li routerLinkActive="active">
-        <a routerLink="auth/signin">Connexion</a>
+        <a routerLink="auth/signin" *ngIf="!isAuth">Connexion</a>
       </li>
-      <li>
+      <li routerLinkActive="active">
         <a (click)="onSignOut()"
-           style="cursor:pointer"
            *ngIf="isAuth">Déconnexion</a>
       </li>
     </ul>

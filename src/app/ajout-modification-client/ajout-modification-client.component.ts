@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ClientDTO} from '../DTOs/clientDTO';
@@ -13,6 +13,9 @@ export class AjoutModificationClientComponent implements OnInit {
 
   signupForm: FormGroup;
   errorMessage: string;
+  @Output() backEvent = new EventEmitter();
+  @Input() client;
+
 
   constructor(private formBuilder: FormBuilder,
               private clientService: ClientService,
@@ -24,12 +27,12 @@ export class AjoutModificationClientComponent implements OnInit {
 
   initForm() {
     this.signupForm = this.formBuilder.group({
-      entreprise: [''],
-      interlocuteur: [''],
-      mail: ['', [Validators.email]],
-      telephone: [''],
-      adresse: [''],
-      remarque: ['']
+      entreprise: [this.client.entreprise],
+      interlocuteur: [this.client.interlocuteur],
+      mail: [this.client.mail],
+      telephone: [this.client.telephone],
+      adresse: [this.client.adresse],
+      remarque: [this.client.remarque]
     });
   }
 
@@ -48,6 +51,11 @@ export class AjoutModificationClientComponent implements OnInit {
     clientDTO.adresse = adresse;
     clientDTO.remarque = remarque;
     this.clientService.createNewClient(clientDTO);
-    this.router.navigate(['']);
+    this.router.navigate(['/clients']);
+    this.back();
+  }
+
+  back() {
+    this.backEvent.emit();
   }
 }

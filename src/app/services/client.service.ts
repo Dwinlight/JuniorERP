@@ -9,28 +9,45 @@ export class ClientService {
   db = firebase.firestore();
   clients: ClientDTO[] = [];
   clientsSubject = new Subject<ClientDTO[]>();
+  entreprises: string[] = [];
   constructor() {
     this.getClients();
   }
   emitClients() {
     this.clientsSubject.next(this.clients);
   }
-  saveClients(newClient: ClientDTO) {
-    // firebase.database().ref('/').set(this.clients);
-    this.db.collection('clients').add({
-      entreprise: newClient.entreprise,
-      interlocuteur: newClient.interlocuteur,
-      mail: newClient.mail,
-      telephone: newClient.telephone,
-      adresse: newClient.adresse,
-      remarque: newClient.remarque
-    })
-      .then(function(docRef) {
-        console.log('Document written with ID: ', docRef.id);
+  saveClients(oldClient: ClientDTO, newClient: ClientDTO) {
+    if (oldClient !== null ) {
+      if (oldClient.entreprise !== newClient.entreprise) {
+        if (this.entreprises.includes(newClient.entreprise.toUpperCase())) {
+          throw alert('Entreprise déjà existante');
+        }
+      }
+    }
+    console.log(newClient.entreprise.toUpperCase());
+    console.log(this.entreprises);
+    if (this.entreprises.includes(newClient.entreprise.toUpperCase())) {
+      console.log('Already exists');
+      alert(newClient.entreprise + ' existe déjà dans votre liste de client');
+    } else {
+      // firebase.database().ref('/').set(this.clients);
+      this.db.collection('clients').doc(newClient.entreprise).set({
+        entreprise: newClient.entreprise,
+        interlocuteur: newClient.interlocuteur,
+        mail: newClient.mail,
+        telephone: newClient.telephone,
+        adresse: newClient.adresse,
+        remarque: newClient.remarque
       })
-      .catch(function(error) {
-        console.error('Error adding document: ', error);
-      });
+        .then(function(docRef) {
+          console.log('Document written with ID: ');
+        })
+        .catch(function(error) {
+          console.error('Error adding document: ', error);
+        });
+      this.entreprises.push(newClient.entreprise.toUpperCase());
+      this.clients.push(newClient);
+    }
   }
   getClients() {
     // firebase.database().ref('/').on('value', (data: DataSnapshot) => {
@@ -47,6 +64,7 @@ export class ClientService {
         client.mail = doc.get('mail');
         client.interlocuteur = doc.get('interlocuteur');
         client.entreprise = doc.get('entreprise');
+        this.entreprises.push(doc.get('entreprise').toUpperCase());
         this.clients.push(client);
       });
     });
@@ -65,8 +83,11 @@ export class ClientService {
     );
   }
   createNewClient(newClient: ClientDTO) {
-    this.clients.push(newClient);
-    this.saveClients(newClient);
+    this.saveClients(null, newClient);
+    this.emitClients();
+  }
+  modifyOldClient(oldClient: ClientDTO, newClient: ClientDTO) {
+    this.saveClients(oldClient, newClient);
     this.emitClients();
   }
   removeBook(client: ClientDTO) {
@@ -78,7 +99,35 @@ export class ClientService {
       }
     );
     this.clients.splice(bookIndexToRemove, 1);
-    this.saveClients(client);
+    this.saveClients(null, client);
     this.emitClients();
+  }
+
+  modifyClients(oldClient: ClientDTO, newClient: ClientDTO) {
+    if (oldClient.entreprise !== newClient.entreprise){
+      if (this.entreprises.includes(newClient.entreprise.toUpperCase())){
+        throw alert('Entreprise déjà existante');
+      }
+    }
+    console.log(newClient.entreprise.toUpperCase());
+    console.log(this.entreprises);
+    // firebase.database().ref('/').set(this.clients);
+    this.db.collection('clients').doc(newClient.entreprise).set({
+      entreprise: newClient.entreprise,
+      interlocuteur: newClient.interlocuteur,
+      mail: newClient.mail,
+      telephone: newClient.telephone,
+      adresse: newClient.adresse,
+      remarque: newClient.remarque
+    })
+      .then(function(docRef) {
+        console.log('Document written with ID: ');
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
+    this.entreprises.push(newClient.entreprise.toUpperCase());
+    this.clients.push(newClient);
+
   }
 }
