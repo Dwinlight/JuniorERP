@@ -16,6 +16,7 @@ export class SingleClientComponent implements OnInit{
   @Input() client: ClientDTO;
   @Output() backEvent = new EventEmitter();
   @Output() modifyEvent = new EventEmitter();
+  @Output() removeEvent = new EventEmitter();
 
 
   constructor(private clientsService: ClientService, private  router: Router, activatedRoute: ActivatedRoute) {
@@ -32,5 +33,10 @@ export class SingleClientComponent implements OnInit{
   modify() {
     console.log('ici');
     this.modifyEvent.emit();
+  }
+  remove(){
+    if (confirm('Voulez-vous vraiment supprimer ce client et tous les colis lui étant liés ?')) {
+      this.removeEvent.emit();
+    }
   }
 }

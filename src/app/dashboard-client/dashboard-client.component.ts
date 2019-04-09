@@ -46,6 +46,11 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
     this.index = index;
   }
 
+  onRemove(client: ClientDTO) {
+    this.clientsService.removeClient(client);
+    alert('Client ' + client.entreprise + ' a bien été supprimé');
+    this.index = null;
+  }
   onBackDashboard() {
     console.log('back');
     this.index = null;

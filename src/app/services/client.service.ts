@@ -77,17 +77,14 @@ export class ClientService {
     this.saveClients(newClient);
     this.emitClients();
   }
-  removeBook(client: ClientDTO) {
-    const bookIndexToRemove = this.clients.findIndex(
-      (clientEl) => {
-        if (clientEl === client) {
-          return true;
-        }
-      }
-    );
-    this.clients.splice(bookIndexToRemove, 1);
-    this.saveClients(client);
-    this.emitClients();
+  removeClient(client: ClientDTO) {
+    this.db.collection('clients').doc('' + client.id ).delete().then(function() {
+      console.log('Document successfully deleted!');
+    }).catch(function(error) {
+      console.error('Error removing document: ', error);
+    });
+    this.entreprises.splice(this.entreprises.indexOf(client.id), 1);
+    this.clients.splice(this.clients.indexOf(client), 1);
   }
 
   modifyClients(oldClient: ClientDTO, newClient: ClientDTO) {
