@@ -15,6 +15,7 @@ export class AjoutModificationClientComponent implements OnInit {
   errorMessage: string;
   @Output() backEvent = new EventEmitter();
   @Input() client;
+  @Input() isModify;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -50,7 +51,7 @@ export class AjoutModificationClientComponent implements OnInit {
     clientDTO.telephone = telephone;
     clientDTO.adresse = adresse;
     clientDTO.remarque = remarque;
-    this.clientService.createNewClient(clientDTO);
+    this.isModify ? this.clientService.modifyClients(this.client, clientDTO) : this.clientService.createNewClient(clientDTO);
     this.router.navigate(['/clients']);
     this.back();
   }

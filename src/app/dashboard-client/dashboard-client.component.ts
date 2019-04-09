@@ -15,8 +15,17 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   clientsSubscription: Subscription;
   isCreated = false;
   isModify = false;
+  clientNull: ClientDTO;
 
-  constructor(private clientsService: ClientService, private  router: Router) { }
+  constructor(private clientsService: ClientService, private  router: Router) {
+    this.clientNull = new ClientDTO();
+    this.clientNull.entreprise = '';
+    this.clientNull.interlocuteur = '';
+    this.clientNull.mail = '';
+    this.clientNull.telephone = '';
+    this.clientNull.adresse = '';
+    this.clientNull.remarque = '';
+  }
 
   ngOnInit() {
     this.clientsSubscription = this.clientsService.clientsSubject.subscribe(
@@ -43,8 +52,8 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
     this.isCreated = false;
     this.isModify = false;
   }
-  onModify(index: number) {
-    this.index = index;
+  onModify() {
+    console.log('modify');
     this.isModify = true;
     this.isCreated = false;
   }

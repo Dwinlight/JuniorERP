@@ -9,45 +9,35 @@ export class ClientService {
   db = firebase.firestore();
   clients: ClientDTO[] = [];
   clientsSubject = new Subject<ClientDTO[]>();
-  entreprises: string[] = [];
+  entreprises: number[] = [];
   constructor() {
     this.getClients();
   }
   emitClients() {
     this.clientsSubject.next(this.clients);
   }
-  saveClients(oldClient: ClientDTO, newClient: ClientDTO) {
-    if (oldClient !== null ) {
-      if (oldClient.entreprise !== newClient.entreprise) {
-        if (this.entreprises.includes(newClient.entreprise.toUpperCase())) {
-          throw alert('Entreprise déjà existante');
-        }
-      }
-    }
-    console.log(newClient.entreprise.toUpperCase());
-    console.log(this.entreprises);
-    if (this.entreprises.includes(newClient.entreprise.toUpperCase())) {
-      console.log('Already exists');
-      alert(newClient.entreprise + ' existe déjà dans votre liste de client');
-    } else {
-      // firebase.database().ref('/').set(this.clients);
-      this.db.collection('clients').doc(newClient.entreprise).set({
-        entreprise: newClient.entreprise,
-        interlocuteur: newClient.interlocuteur,
-        mail: newClient.mail,
-        telephone: newClient.telephone,
-        adresse: newClient.adresse,
-        remarque: newClient.remarque
+  saveClients(newClient: ClientDTO) {
+    let idNew;
+    this.entreprises.sort();
+    this.entreprises.length === 0 ?  idNew = 0 : idNew = this.entreprises[this.entreprises.length - 1] + 1;
+    this.db.collection('clients').doc('' + idNew ).set({
+      entreprise: newClient.entreprise,
+      interlocuteur: newClient.interlocuteur,
+      mail: newClient.mail,
+      telephone: newClient.telephone,
+      adresse: newClient.adresse,
+      remarque: newClient.remarque,
+      id: idNew
+    })
+      .then(function(docRef) {
+        console.log('Document written with ID: ' + docRef);
       })
-        .then(function(docRef) {
-          console.log('Document written with ID: ');
-        })
-        .catch(function(error) {
-          console.error('Error adding document: ', error);
-        });
-      this.entreprises.push(newClient.entreprise.toUpperCase());
-      this.clients.push(newClient);
-    }
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
+    this.entreprises.push(idNew);
+    newClient.id = idNew;
+    this.clients.push(newClient);
   }
   getClients() {
     // firebase.database().ref('/').on('value', (data: DataSnapshot) => {
@@ -64,7 +54,8 @@ export class ClientService {
         client.mail = doc.get('mail');
         client.interlocuteur = doc.get('interlocuteur');
         client.entreprise = doc.get('entreprise');
-        this.entreprises.push(doc.get('entreprise').toUpperCase());
+        client.id = doc.get('id');
+        this.entreprises.push(+ doc.get('id'));
         this.clients.push(client);
       });
     });
@@ -83,11 +74,7 @@ export class ClientService {
     );
   }
   createNewClient(newClient: ClientDTO) {
-    this.saveClients(null, newClient);
-    this.emitClients();
-  }
-  modifyOldClient(oldClient: ClientDTO, newClient: ClientDTO) {
-    this.saveClients(oldClient, newClient);
+    this.saveClients(newClient);
     this.emitClients();
   }
   removeBook(client: ClientDTO) {
@@ -99,26 +86,21 @@ export class ClientService {
       }
     );
     this.clients.splice(bookIndexToRemove, 1);
-    this.saveClients(null, client);
+    this.saveClients(client);
     this.emitClients();
   }
 
   modifyClients(oldClient: ClientDTO, newClient: ClientDTO) {
-    if (oldClient.entreprise !== newClient.entreprise){
-      if (this.entreprises.includes(newClient.entreprise.toUpperCase())){
-        throw alert('Entreprise déjà existante');
-      }
-    }
-    console.log(newClient.entreprise.toUpperCase());
-    console.log(this.entreprises);
-    // firebase.database().ref('/').set(this.clients);
-    this.db.collection('clients').doc(newClient.entreprise).set({
+    console.log(oldClient.id);
+    newClient.id = oldClient.id;
+    this.db.collection('clients').doc('' + oldClient.id).update({
       entreprise: newClient.entreprise,
       interlocuteur: newClient.interlocuteur,
       mail: newClient.mail,
       telephone: newClient.telephone,
       adresse: newClient.adresse,
-      remarque: newClient.remarque
+      remarque: newClient.remarque,
+      id: newClient.id
     })
       .then(function(docRef) {
         console.log('Document written with ID: ');
@@ -126,8 +108,8 @@ export class ClientService {
       .catch(function(error) {
         console.error('Error adding document: ', error);
       });
-    this.entreprises.push(newClient.entreprise.toUpperCase());
     this.clients.push(newClient);
-
+    this.clients.splice(this.clients.indexOf(oldClient), 1);
+    this.emitClients();
   }
 }

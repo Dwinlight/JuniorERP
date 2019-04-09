@@ -15,7 +15,7 @@ export class SingleClientComponent implements OnInit{
   clientsSubscription: Subscription;
   @Input() client: ClientDTO;
   @Output() backEvent = new EventEmitter();
- @Output() modifyEvent = new EventEmitter();
+  @Output() modifyEvent = new EventEmitter();
 
 
   constructor(private clientsService: ClientService, private  router: Router, activatedRoute: ActivatedRoute) {
@@ -30,6 +30,7 @@ export class SingleClientComponent implements OnInit{
     this.backEvent.emit();
   }
   modify() {
+    console.log('ici');
     this.modifyEvent.emit();
   }
 }

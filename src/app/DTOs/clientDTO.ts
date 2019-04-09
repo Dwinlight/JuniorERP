@@ -5,5 +5,5 @@ export class ClientDTO {
   public telephone: string;
   public adresse: string;
   public remarque: string;
-  public id?: number;
+  public id: number;
 }

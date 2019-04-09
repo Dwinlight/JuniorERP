@@ -20,13 +20,13 @@
 </div>
 
 <div *ngFor="let client of clients; let i = index">
-  <app-single-client *ngIf="index===i" [client]="client" (backEvent)='onBackDashboard()'> </app-single-client>
+  <app-single-client *ngIf="index===i && isModify == false"  [client]="client" (backEvent)='onBackDashboard()' (modifyEvent)='onModify()'> </app-single-client>
 </div>
 
 <div *ngFor="let client of clients; let j = index">
-  <app-ajout-modification-client *ngIf="index===j && isModify == true" [client]="client" (modifyEvent)='onModify(j)'> </app-ajout-modification-client>
+  <app-ajout-modification-client *ngIf="index===j && isModify == true" [isModify]="isModify" [client]="client" (backEvent)='onBackDashboard()'> </app-ajout-modification-client>
 </div>
 
 <div *ngIf = "isCreated">
-  <app-ajout-modification-client (backEvent)='onBackDashboard()'></app-ajout-modification-client>
+  <app-ajout-modification-client [isModify]="isModify" (backEvent)='onBackDashboard()' [client]="clientNull"></app-ajout-modification-client>
 </div>
