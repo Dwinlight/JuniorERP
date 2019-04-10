@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Ajouter/Modifier un client</h2>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="exampleFormControlSelect1" *ngFor="let entreprise in entreprises">
+          <option>{{entreprise.nom}}</option>
+
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="entreprise">Entreprise</label>
+        <input type="entreprise"
+               id="entreprise"
+               class="form-control"
+               formControlName="entreprise">
+      </div>
+
+      <div class="form-group">
+        <label for="interlocuteur">Interlocuteur</label>
+        <input type="interlocuteur"
+               id="interlocuteur"
+               class="form-control"
+               formControlName="interlocuteur">
+      </div>
+      <div class="form-group">
+        <label for="mail">Mail</label>
+        <input type="text"
+               id="mail"
+               class="form-control"
+               formControlName="mail">
+      </div>
+
+      <div class="form-group">
+        <label for="telephone">Téléphone</label>
+        <input type="telephone"
+               id="telephone"
+               class="form-control"
+               formControlName="telephone">
+      </div>
+
+      <div class="form-group">
+        <label for="adresse">Adresse</label>
+        <input type="adresse"
+               id="adresse"
+               class="form-control"
+               formControlName="adresse">
+      </div>
+
+      <div class="form-group">
+        <label for="remarque">Remarque</label>
+        <input type="remarque"
+               id="remarque"
+               class="form-control"
+               formControlName="remarque">
+      </div>
+      <button class="btn btn-primary"
+              type="submit"
+              >Créer/Modifier</button>
+      <button class="btn btn-secondary"
+              (click)="back()"
+      >Retour</button>
+    </form>
+    <p class="text-danger">{{ errorMessage }}</p>
+  </div>
+</div>

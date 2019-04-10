@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AjoutModificationClientComponent } from './ajout-modification-client.component';
+import { AjoutModificationColisComponent } from './ajout-modification-colis.component';
 
 describe('AjoutModificationColisComponent', () => {
-  let component: AjoutModificationClientComponent;
-  let fixture: ComponentFixture<AjoutModificationClientComponent>;
+  let component: AjoutModificationColisComponent;
+  let fixture: ComponentFixture<AjoutModificationColisComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AjoutModificationClientComponent ]
+      declarations: [ AjoutModificationColisComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AjoutModificationClientComponent);
+    fixture = TestBed.createComponent(AjoutModificationColisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
