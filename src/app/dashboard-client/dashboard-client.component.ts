@@ -3,6 +3,8 @@ import {ClientDTO} from '../DTOs/clientDTO';
 import {Subscription} from 'rxjs';
 import {ClientService} from '../services/client.service';
 import {Router} from '@angular/router';
+import {forEach} from '@angular/router/src/utils/collection';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-client',
@@ -10,14 +12,16 @@ import {Router} from '@angular/router';
   styleUrls: ['./dashboard-client.component.css']
 })
 export class DashboardClientComponent implements OnInit, OnDestroy {
+  signupForm: FormGroup;
   index: number = null;
   clients: ClientDTO[];
+  backUpClients: ClientDTO[];
   clientsSubscription: Subscription;
   isCreated = false;
   isModify = false;
   clientNull: ClientDTO;
 
-  constructor(private clientsService: ClientService, private  router: Router) {
+  constructor(private formBuilder: FormBuilder, private clientsService: ClientService, private  router: Router) {
     this.clientNull = new ClientDTO();
     this.clientNull.entreprise = '';
     this.clientNull.interlocuteur = '';
@@ -28,9 +32,13 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.signupForm = this.formBuilder.group({
+      search: ['']
+    });
     this.clientsSubscription = this.clientsService.clientsSubject.subscribe(
       (clients: ClientDTO[]) => {
         this.clients = clients;
+        this.backUpClients = clients;
       }
     );
     this.clientsService.emitClients();
@@ -42,13 +50,17 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   }
 
 
-  onViewClient(index: number) {
-    this.index = index;
+  onViewClient(client: ClientDTO) {
+    this.index = this.clients.indexOf(client);
   }
 
   onRemove(client: ClientDTO) {
     this.clientsService.removeClient(client);
     alert('Client ' + client.entreprise + ' a bien été supprimé');
+    this.backUpClients = this.clients;
+    this.signupForm = this.formBuilder.group({
+      search: ['']
+    });
     this.index = null;
   }
   onBackDashboard() {
@@ -63,8 +75,27 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
     this.isCreated = false;
   }
 
+  search(key: string) {
+    this.backUpClients = [];
+    if (key === '') {
+      this.backUpClients = this.clients;
+    } else {
+
+      for (const value of this.clients) {
+        console.log(key);
+        console.log(value.entreprise);
+        if (value.entreprise.toLowerCase().search(key.toLowerCase()) !== -1) {
+          this.backUpClients.push(value);
+        }
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.clientsSubscription.unsubscribe();
+  }
+  onSubmit() {
+    this.search(this.signupForm.get('search').value);
   }
 
 }
