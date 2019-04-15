@@ -50,13 +50,17 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   }
 
 
-  onViewClient(index: number) {
-    this.index = index;
+  onViewClient(client: ClientDTO) {
+    this.index = this.clients.indexOf(client);
   }
 
   onRemove(client: ClientDTO) {
     this.clientsService.removeClient(client);
     alert('Client ' + client.entreprise + ' a bien été supprimé');
+    this.backUpClients = this.clients;
+    this.signupForm = this.formBuilder.group({
+      search: ['']
+    });
     this.index = null;
   }
   onBackDashboard() {
@@ -76,13 +80,14 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
     if (key === '') {
       this.backUpClients = this.clients;
     } else {
-      this.clients.forEach(function(value) {
+
+      for (const value of this.clients) {
         console.log(key);
         console.log(value.entreprise);
-        if (value.entreprise.includes(key)) {
+        if (value.entreprise.toLowerCase().search(key.toLowerCase()) !== -1) {
           this.backUpClients.push(value);
         }
-      });
+      }
     }
   }
 
