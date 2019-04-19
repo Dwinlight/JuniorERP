@@ -3,6 +3,8 @@ import {ClientDTO} from '../DTOs/clientDTO';
 import {Subscription} from 'rxjs';
 import {ClientService} from '../services/client.service';
 import {Router} from '@angular/router';
+import {ColiDTO} from '../DTOs/coliDTO';
+import {ColisService} from '../services/colis.service';
 
 @Component({
   selector: 'app-dashboard-colis',
@@ -10,39 +12,47 @@ import {Router} from '@angular/router';
   styleUrls: ['./dashboard-colis.component.css']
 })
 export class DashboardColisComponent implements OnInit {
+
   index: number = null;
   clients: ClientDTO[];
-  clientsSubscription: Subscription;
+  colis: ColiDTO[];
+  colisSubscription: Subscription;
   isCreated = false;
   isModify = false;
-  clientNull: ClientDTO;
+  coliNull: ColiDTO;
+  entreprises: string[][];
 
-  constructor(private clientsService: ClientService, private  router: Router) {
-    this.clientNull = new ClientDTO();
-    this.clientNull.entreprise = '';
-    this.clientNull.interlocuteur = '';
-    this.clientNull.mail = '';
-    this.clientNull.telephone = '';
-    this.clientNull.adresse = '';
-    this.clientNull.remarque = '';
+  constructor(private colisService: ColisService, private clientsService: ClientService, private  router: Router) {
+    this.coliNull = new ColiDTO();
+    this.coliNull.numeroPalette = '';
+    this.coliNull.marquage = '';
+    this.coliNull.emplacement = '';
+    this.coliNull.designation = '';
+    this.coliNull.codeArticle = '';
+    this.coliNull.depart = '';
+    this.coliNull.arrivee = '';
+    this.coliNull.remarque = '';
   }
 
   ngOnInit() {
-    this.clientsSubscription = this.clientsService.clientsSubject.subscribe(
-      (clients: ClientDTO[]) => {
-        this.clients = clients;
+    console.log('1');
+    this.clientsService.emitClients();
+    console.log('2');
+    this.colisSubscription = this.colisService.colisSubject.subscribe(
+      (colis: ColiDTO[]) => {
+        this.colis = colis;
       }
     );
-    this.clientsService.emitClients();
+    this.colisService.emitColis();
   }
 
-  onNewClient() {
+  onNewColis() {
     this.isCreated = true;
     // this.router.navigate(['/client']);
   }
 
 
-  onViewClient(index: number) {
+  onViewColis(index: number) {
     this.index = index;
   }
 
@@ -64,6 +74,6 @@ export class DashboardColisComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.clientsSubscription.unsubscribe();
+    this.colisSubscription.unsubscribe();
   }
 }

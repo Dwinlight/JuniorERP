@@ -1,4 +1,5 @@
 export class ColiDTO {
+  public entreprise: string;
   public idEntreprise: number;
   public idColi: number;
   public emplacement: string;

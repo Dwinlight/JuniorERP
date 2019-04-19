@@ -11,6 +11,7 @@ export class ClientService {
   clientsSubject = new Subject<ClientDTO[]>();
   entreprises: number[] = [];
   constructor() {
+    console.log('SAV');
     this.getClients();
   }
   emitClients() {

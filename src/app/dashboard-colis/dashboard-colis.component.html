@@ -1,3 +1,4 @@
+
 <div *ngIf="index === null && isCreated === false" class="row">
   <div class="col-xs-12">
     <h2>Vos livres</h2>
@@ -19,15 +20,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let client of clients; let i = index"
+        <tr *ngFor="let coli of colis; let i = index"
         >
-          <td>{{client.entreprise}}</td>
-          <td>{{client.interlocuteur}}</td>
-          <td>{{client.telephone}}</td>
-          <td>{{client.mail}}</td>
-          <td>{{client.adresse}}</td>
-          <td>0</td>
-          <button type="button" class="btn btn-info" (click)="onViewClient(i)">Détails</button>
+          <td>{{coli.entreprise}}</td>
+          <td>{{coli.emplacement}}</td>
+          <td>{{coli.codeArticle}}</td>
+          <td>{{coli.designation}}</td>
+          <td>{{coli.marquage}}</td>
+          <td>{{coli.numeroPalette}}</td>
+          <td>{{coli.remarque}}</td>
+          <td>{{coli.arrivee}}</td>
+          <td>{{coli.depart}}</td>
+
+          <button type="button" class="btn btn-info" (click)="onViewColis(i)">Détails</button>
 
         </tr>
 
@@ -36,18 +41,19 @@
 
 
     </div>
-    <button class="btn btn-primary" (click)="onNewClient()">Nouveau Client</button>
+    <button class="btn btn-primary" (click)="onNewColis()">Nouveau colis</button>
   </div>
 </div>
 
-<div *ngFor="let client of clients; let i = index">
-  <app-single-client *ngIf="index===i && isModify == false"  (removeEvent)="onRemove(client)" [client]="client" (backEvent)='onBackDashboard()' (modifyEvent)='onModify()'> </app-single-client>
-</div>
+<!--
 
 <div *ngFor="let client of clients; let j = index">
   <app-ajout-modification-client *ngIf="index===j && isModify == true" [isModify]="isModify" [client]="client" (backEvent)='onBackDashboard()'> </app-ajout-modification-client>
 </div>
 
+-->
+
 <div *ngIf = "isCreated">
-  <app-ajout-modification-client [isModify]="isModify" (backEvent)='onBackDashboard()' [client]="clientNull"></app-ajout-modification-client>
+  <app-ajout-modification-colis [isModify]="isModify" (backEvent)='onBackDashboard()' [colis]="coliNull"></app-ajout-modification-colis>
 </div>
+

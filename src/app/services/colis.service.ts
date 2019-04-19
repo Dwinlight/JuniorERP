@@ -8,27 +8,35 @@ import {ColiDTO} from '../DTOs/coliDTO';
 @Injectable()
 export class ColisService {
   db = firebase.firestore();
-  colis: ClientDTO[] = [];
-  clientsSubject = new Subject<ClientDTO[]>();
+  colis: ColiDTO[] = [];
+  colisSubject = new Subject<ColiDTO[]>();
   entreprises: number[] = [];
   constructor() {
+    console.log('constructeur');
     this.getColis();
   }
-  emitClients() {
-    this.clientsSubject.next(this.colis);
+  emitColis() {
+    this.colisSubject.next(this.colis);
   }
-  saveColis(newClient: ColiDTO) {
+  saveColis(newColi: ColiDTO) {
     let idNew;
     this.entreprises.sort();
-    this.entreprises.length === 0 ?  idNew = 0 : idNew = this.entreprises[this.entreprises.length - 1] + 1;
+    this.entreprises.length === 0 ?  idNew = 0 : idNew = this.entreprises.length;
+    for (const e of this.entreprises) {
+      //idNew > e[0]
+    }
+    console.log(idNew);
     this.db.collection('colis').doc('' + idNew ).set({
-      entreprise: newClient.entreprise,
-      interlocuteur: newClient.interlocuteur,
-      mail: newClient.mail,
-      telephone: newClient.telephone,
-      adresse: newClient.adresse,
-      remarque: newClient.remarque,
-      id: idNew
+      idEntreprise: newColi.idEntreprise,
+      idColi: idNew,
+      arrivee: newColi.arrivee,
+      depart: newColi.depart === '' ? 'N/A' : newColi.depart,
+      codeArticle: newColi.codeArticle,
+      remarque: newColi.remarque,
+      designation: newColi.designation,
+      emplacement: newColi.emplacement,
+      marquage: newColi.marquage,
+      numeroPalette: newColi.numeroPalette
     })
       .then(function(docRef) {
         console.log('Document written with ID: ' + docRef);
@@ -37,31 +45,36 @@ export class ColisService {
         console.error('Error adding document: ', error);
       });
     this.entreprises.push(idNew);
-    newClient.id = idNew;
-    this.Colis.push(newClient);
+    newColi.idColi = idNew;
+    this.colis.push(newColi);
   }
   getColis() {
     // firebase.database().ref('/').on('value', (data: DataSnapshot) => {
     //  this.Colis = data.val() ? data.val() : [];
     //  this.emitColis();
     // });
-    this.db.collection('Colis').get().then((querySnapshot) => {
+    console.log('vide');
+    this.db.collection('colis').get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}`);
-        const client = new ColiDTO();
-        client.remarque = doc.get('remarque');
-        client.adresse = doc.get('adresse');
-        client.telephone = doc.get('telephone');
-        client.mail = doc.get('mail');
-        client.interlocuteur = doc.get('interlocuteur');
-        client.entreprise = doc.get('entreprise');
-        client.id = doc.get('id');
+        const coli = new ColiDTO();
+        coli.idEntreprise = doc.get('idEntreprise');
+        coli.idColi = doc.get('idColi');
+        coli.arrivee = doc.get('arrivee');
+        coli.depart = doc.get('depart');
+        coli.codeArticle = doc.get('codeArticle');
+        coli.remarque = doc.get('remarque');
+        coli.designation = doc.get('designation');
+        coli.emplacement = doc.get('emplacement');
+        coli.marquage = doc.get('marquage');
+        coli.numeroPalette = doc.get('numeroPalette');
         this.entreprises.push(+ doc.get('id'));
-        this.Colis.push(client);
+        console.log(coli);
+        this.colis.push(coli);
       });
     });
   }
-  getSingleClient(id: number) {
+  getSingleColi(id: number) {
     return new Promise(
       (resolve, reject) => {
         firebase.database().ref('/books/' + id).once('value').then(
@@ -74,31 +87,34 @@ export class ColisService {
       }
     );
   }
-  createNewClient(newClient: ColiDTO) {
+  createNewColi(newClient: ColiDTO) {
     this.saveColis(newClient);
     this.emitColis();
   }
-  removeClient(client: ColiDTO) {
-    this.db.collection('Colis').doc('' + client.id ).delete().then(function() {
+  removeColi(coli: ColiDTO) {
+    this.db.collection('Colis').doc('' + coli.idColi ).delete().then(function() {
       console.log('Document successfully deleted!');
     }).catch(function(error) {
       console.error('Error removing document: ', error);
     });
-    this.entreprises.splice(this.entreprises.indexOf(client.id), 1);
-    this.Colis.splice(this.Colis.indexOf(client), 1);
+    this.entreprises.splice(this.entreprises.indexOf(coli.idColi), 1);
+    this.colis.splice(this.colis.indexOf(coli), 1);
   }
 
-  modifyColis(oldClient: ColiDTO, newClient: ColiDTO) {
-    console.log(oldClient.id);
-    newClient.id = oldClient.id;
-    this.db.collection('Colis').doc('' + oldClient.id).update({
-      entreprise: newClient.entreprise,
-      interlocuteur: newClient.interlocuteur,
-      mail: newClient.mail,
-      telephone: newClient.telephone,
-      adresse: newClient.adresse,
-      remarque: newClient.remarque,
-      id: newClient.id
+  modifyColi(oldColi: ColiDTO, newColi: ColiDTO) {
+    console.log(oldColi.idColi);
+    newColi.idColi = oldColi.idColi;
+    this.db.collection('Colis').doc('' + oldColi.idColi).update({
+      idEntreprise: newColi.idEntreprise,
+      idColi: newColi.idColi,
+      arrivee: newColi.arrivee,
+      depart: newColi.depart === '' ? 'N/A' : newColi.depart,
+      codeArticle: newColi.codeArticle,
+      remarque: newColi.remarque,
+      designation: newColi.designation,
+      emplacement: newColi.emplacement,
+      marquage: newColi.marquage,
+      numeroPalette: newColi.numeroPalette
     })
       .then(function(docRef) {
         console.log('Document written with ID: ');
@@ -106,8 +122,8 @@ export class ColisService {
       .catch(function(error) {
         console.error('Error adding document: ', error);
       });
-    this.Colis.push(newClient);
-    this.Colis.splice(this.clients.indexOf(oldClient), 1);
-    this.emitClients();
+    this.colis.push(newColi);
+    this.colis.splice(this.colis.indexOf(oldColi), 1);
+    this.emitColis();
   }
 }

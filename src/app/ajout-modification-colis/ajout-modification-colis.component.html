@@ -4,50 +4,49 @@
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
       <div class="form-group">
-        <label for="exampleFormControlSelect1">Example select</label>
-        <select class="form-control" id="exampleFormControlSelect1" *ngFor="let entreprise in entreprises">
-          <option>{{entreprise.nom}}</option>
-
+        <label for="entreprise">Entreprise</label>
+        <select class="form-control" id="entreprise" formControlName="entreprise" >
+          <option *ngFor="let entreprise of entreprises" >{{entreprise[1]}}</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="entreprise">Entreprise</label>
-        <input type="entreprise"
-               id="entreprise"
+        <label for="emplacement">Emplacement</label>
+        <input type="emplacement"
+               id="emplacement"
                class="form-control"
-               formControlName="entreprise">
+               formControlName="emplacement">
       </div>
 
       <div class="form-group">
-        <label for="interlocuteur">Interlocuteur</label>
-        <input type="interlocuteur"
-               id="interlocuteur"
+        <label for="codeArticle">Code Article</label>
+        <input type="codeArticle"
+               id="codeArticle"
                class="form-control"
-               formControlName="interlocuteur">
+               formControlName="codeArticle">
       </div>
       <div class="form-group">
-        <label for="mail">Mail</label>
+        <label for="designation">Désignation</label>
         <input type="text"
-               id="mail"
+               id="designation"
                class="form-control"
-               formControlName="mail">
+               formControlName="designation">
       </div>
 
       <div class="form-group">
-        <label for="telephone">Téléphone</label>
-        <input type="telephone"
-               id="telephone"
+        <label for="numeroPalette">Numéro palette</label>
+        <input type="numeroPalette"
+               id="numeroPalette"
                class="form-control"
-               formControlName="telephone">
+               formControlName="numeroPalette">
       </div>
 
       <div class="form-group">
-        <label for="adresse">Adresse</label>
-        <input type="adresse"
-               id="adresse"
+        <label for="marquage">Marquage</label>
+        <input type="marquage"
+               id="marquage"
                class="form-control"
-               formControlName="adresse">
+               formControlName="marquage">
       </div>
 
       <div class="form-group">
@@ -57,9 +56,25 @@
                class="form-control"
                formControlName="remarque">
       </div>
+
+      <div class="form-group">
+        <label for="arrivee">Date d'arrivée</label>
+        <input type="date"
+               id="arrivee"
+               class="form-control"
+               formControlName="arrivee">
+      </div>
+
+      <div class="form-group">
+        <label for="depart">Date de départ</label>
+        <input type="date"
+               id="depart"
+               class="form-control"
+               formControlName="depart">
+      </div>
       <button class="btn btn-primary"
               type="submit"
-              >Créer/Modifier</button>
+      >Créer/Modifier</button>
       <button class="btn btn-secondary"
               (click)="back()"
       >Retour</button>
