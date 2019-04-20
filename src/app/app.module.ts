@@ -12,11 +12,14 @@ import { AjoutModificationClientComponent } from './ajout-modification-client/aj
 import {ClientService} from './services/client.service';
 import { DashboardClientComponent } from './dashboard-client/dashboard-client.component';
 import { SingleClientComponent } from './dashboard-client/single-client/single-client.component';
+import { DashboardColisComponent } from './dashboard-colis/dashboard-colis.component';
+import {AjoutModificationColisComponent} from './ajout-modification-colis/ajout-modification-colis.component';
+import {ColisService} from './services/colis.service';
 
 const appRoutes: Routes = [
   { path: 'client', component: AjoutModificationClientComponent },
   { path: 'clients', component: DashboardClientComponent },
-  { path: 'single-client/:index', component: SingleClientComponent },
+  { path: 'colis', component: DashboardColisComponent },
   { path: '', component: SigninComponent }
 ];
 
@@ -27,7 +30,9 @@ const appRoutes: Routes = [
     SignupComponent,
     SigninComponent,
     AjoutModificationClientComponent,
+    AjoutModificationColisComponent,
     DashboardClientComponent,
+    DashboardColisComponent,
     SingleClientComponent
   ],
   imports: [
@@ -36,7 +41,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, ClientService],
+  providers: [AuthService, ClientService, ColisService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,60 @@
+
+<div *ngIf="index === null && isCreated === false" class="row">
+  <div class="col-xs-12">
+    <h2>Vos livres</h2>
+    <div class="list-group">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Entreprise</th>
+          <th scope="col">Emplacement</th>
+          <th scope="col">Code Article</th>
+          <th scope="col">Désignation</th>
+          <th scope="col">Marquage</th>
+          <th scope="col">N° Palette</th>
+          <th scope="col">Remarque</th>
+          <th scope="col">Date d'arrivée</th>
+          <th scope="col">Date de départ</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let coli of colis; let i = index"
+        >
+          <td>{{coli.entreprise}}</td>
+          <td>{{coli.emplacement}}</td>
+          <td>{{coli.codeArticle}}</td>
+          <td>{{coli.designation}}</td>
+          <td>{{coli.marquage}}</td>
+          <td>{{coli.numeroPalette}}</td>
+          <td>{{coli.remarque}}</td>
+          <td>{{coli.arrivee}}</td>
+          <td>{{coli.depart}}</td>
+
+          <button type="button" class="btn btn-warning" (click)="onModify(i)">Modifier</button>
+          <button type="button" class="btn btn-danger" (click)="onRemove(coli)">Supprimer</button>
+
+        </tr>
+
+        </tbody>
+      </table>
+
+
+    </div>
+    <button class="btn btn-primary" (click)="onNewColis()">Nouveau colis</button>
+  </div>
+</div>
+
+
+
+<div *ngFor="let coli of colis; let j = index">
+  <app-ajout-modification-colis *ngIf="index===j && isModify == true" [isModify]="isModify" [colis]="coli" (backEvent)='onBackDashboard()'> </app-ajout-modification-colis>
+</div>
+
+
+
+<div *ngIf = "isCreated">
+  <app-ajout-modification-colis [isModify]="isModify" (backEvent)='onBackDashboard()' [colis]="coliNull"></app-ajout-modification-colis>
+</div>
+
