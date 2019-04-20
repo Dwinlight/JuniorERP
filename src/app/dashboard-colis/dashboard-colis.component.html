@@ -32,7 +32,8 @@
           <td>{{coli.arrivee}}</td>
           <td>{{coli.depart}}</td>
 
-          <button type="button" class="btn btn-info" (click)="onViewColis(i)">Détails</button>
+          <button type="button" class="btn btn-warning" (click)="onModify(i)">Modifier</button>
+          <button type="button" class="btn btn-danger" (click)="onRemove(coli)">Supprimer</button>
 
         </tr>
 
@@ -45,13 +46,13 @@
   </div>
 </div>
 
-<!--
 
-<div *ngFor="let client of clients; let j = index">
-  <app-ajout-modification-client *ngIf="index===j && isModify == true" [isModify]="isModify" [client]="client" (backEvent)='onBackDashboard()'> </app-ajout-modification-client>
+
+<div *ngFor="let coli of colis; let j = index">
+  <app-ajout-modification-colis *ngIf="index===j && isModify == true" [isModify]="isModify" [colis]="coli" (backEvent)='onBackDashboard()'> </app-ajout-modification-colis>
 </div>
 
--->
+
 
 <div *ngIf = "isCreated">
   <app-ajout-modification-colis [isModify]="isModify" (backEvent)='onBackDashboard()' [colis]="coliNull"></app-ajout-modification-colis>

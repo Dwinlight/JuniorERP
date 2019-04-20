@@ -47,8 +47,9 @@ export class AjoutModificationColisComponent implements OnInit {
 
   initForm() {
     console.log(this.entreprises[1][1]);
+    console.log(this.colis.entreprise);
     this.signupForm = this.formBuilder.group({
-      entreprise: [''],
+      entreprise: [this.colis.entreprise],
       arrivee: [this.colis.arrivee],
       depart: [this.colis.depart],
       codeArticle: [this.colis.codeArticle],
@@ -72,7 +73,7 @@ export class AjoutModificationColisComponent implements OnInit {
     const depart = this.signupForm.get('depart').value;
     const codeArticle = this.signupForm.get('codeArticle').value;
     const remarque = this.signupForm.get('remarque').value;
-    const designation = this.signupForm.get('arrivee').value;
+    const designation = this.signupForm.get('designation').value;
     const emplacement = this.signupForm.get('emplacement').value;
     const marquage = this.signupForm.get('marquage').value;
     const numeroPalette = this.signupForm.get('numeroPalette').value;
@@ -87,6 +88,8 @@ export class AjoutModificationColisComponent implements OnInit {
     coliDTO.emplacement = emplacement;
     coliDTO.marquage = marquage;
     coliDTO.numeroPalette = numeroPalette;
+    console.log(entreprise);
+    console.log(idEntreprise);
     this.isModify ? this.colisService.modifyColi(this.colis, coliDTO) : this.colisService.createNewColi(coliDTO);
     this.router.navigate(['/colis']);
     this.back();

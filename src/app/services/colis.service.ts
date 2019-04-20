@@ -20,13 +20,18 @@ export class ColisService {
   }
   saveColis(newColi: ColiDTO) {
     let idNew;
-    this.entreprises.sort();
-    this.entreprises.length === 0 ?  idNew = 0 : idNew = this.entreprises.length;
-    for (const e of this.entreprises) {
-      //idNew > e[0]
+    // this.entreprises.sort();
+    // this.entreprises.length === 0 ?  idNew = 0 : idNew = this.entreprises[this.entreprises.length - 1][0] + 1;
+    idNew = 0;
+    for (const e of this.colis) {
+      console.log(e);
+      if (idNew <= + e.idColi) {
+        idNew = + e.idColi + 1;
+      }
     }
     console.log(idNew);
     this.db.collection('colis').doc('' + idNew ).set({
+      entreprise: newColi.entreprise,
       idEntreprise: newColi.idEntreprise,
       idColi: idNew,
       arrivee: newColi.arrivee,
@@ -68,6 +73,7 @@ export class ColisService {
         coli.emplacement = doc.get('emplacement');
         coli.marquage = doc.get('marquage');
         coli.numeroPalette = doc.get('numeroPalette');
+        coli.entreprise = doc.get('entreprise');
         this.entreprises.push(+ doc.get('id'));
         console.log(coli);
         this.colis.push(coli);
@@ -92,20 +98,21 @@ export class ColisService {
     this.emitColis();
   }
   removeColi(coli: ColiDTO) {
-    this.db.collection('Colis').doc('' + coli.idColi ).delete().then(function() {
-      console.log('Document successfully deleted!');
+    this.db.collection('colis').doc('' + coli.idColi ).delete().then(function() {
+      alert('Colis supprimé');
     }).catch(function(error) {
       console.error('Error removing document: ', error);
     });
-    this.entreprises.splice(this.entreprises.indexOf(coli.idColi), 1);
+    // this.entreprises.splice(this.entreprises.indexOf(coli.idColi), 1);
     this.colis.splice(this.colis.indexOf(coli), 1);
   }
 
   modifyColi(oldColi: ColiDTO, newColi: ColiDTO) {
     console.log(oldColi.idColi);
     newColi.idColi = oldColi.idColi;
-    this.db.collection('Colis').doc('' + oldColi.idColi).update({
+    this.db.collection('colis').doc('' + oldColi.idColi).update({
       idEntreprise: newColi.idEntreprise,
+      entreprise: newColi.entreprise,
       idColi: newColi.idColi,
       arrivee: newColi.arrivee,
       depart: newColi.depart === '' ? 'N/A' : newColi.depart,

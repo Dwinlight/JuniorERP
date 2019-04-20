@@ -56,9 +56,11 @@ export class DashboardColisComponent implements OnInit {
     this.index = index;
   }
 
-  onRemove(client: ClientDTO) {
-    this.clientsService.removeClient(client);
-    alert('Client ' + client.entreprise + ' a bien été supprimé');
+  onRemove(coli: ColiDTO) {
+    if (confirm('Voulez-vous vraiment supprimer ce colis ?')) {
+      this.colisService.removeColi(coli);
+    }
+
     this.index = null;
   }
   onBackDashboard() {
@@ -67,8 +69,9 @@ export class DashboardColisComponent implements OnInit {
     this.isCreated = false;
     this.isModify = false;
   }
-  onModify() {
+  onModify(i: number) {
     console.log('modify');
+    this.index = i;
     this.isModify = true;
     this.isCreated = false;
   }
