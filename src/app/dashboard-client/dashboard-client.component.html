@@ -46,7 +46,7 @@
 </div>
 
 <div *ngFor="let client of clients; let i = index">
-  <app-single-client *ngIf="index===i && isModify == false"  (removeEvent)="onRemove(client)" [client]="client" (backEvent)='onBackDashboard()' (modifyEvent)='onModify()'> </app-single-client>
+  <app-single-client *ngIf="index===i && isModify == false" [colis]="colis" (removeEvent)="onRemove(client)" [client]="client" (backEvent)='onBackDashboard()' (modifyEvent)='onModify()'> </app-single-client>
 </div>
 
 <div *ngFor="let client of clients; let j = index">

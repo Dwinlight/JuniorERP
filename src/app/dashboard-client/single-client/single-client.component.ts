@@ -3,6 +3,7 @@ import {ClientDTO} from '../../DTOs/clientDTO';
 import {ClientService} from '../../services/client.service';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {ColiDTO} from '../../DTOs/coliDTO';
 
 @Component({
   selector: 'app-single-client',
@@ -17,6 +18,8 @@ export class SingleClientComponent implements OnInit{
   @Output() backEvent = new EventEmitter();
   @Output() modifyEvent = new EventEmitter();
   @Output() removeEvent = new EventEmitter();
+  @Input() colis: ColiDTO[];
+  own: ColiDTO[] = [];
 
 
   constructor(private clientsService: ClientService, private  router: Router, activatedRoute: ActivatedRoute) {
@@ -25,6 +28,16 @@ export class SingleClientComponent implements OnInit{
 //  }
 
   ngOnInit() {
+    for (const e of this.colis) {
+      console.log('ng');
+      console.log(e);
+      console.log(this.client.id);
+      if (+e.idEntreprise === +this.client.id) {
+        this.own.push(e);
+      }
+    }
+    console.log('iniiiiit');
+    console.log(this.own);
 
   }
   back() {
