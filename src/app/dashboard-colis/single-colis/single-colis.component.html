@@ -1,0 +1,49 @@
+<h1>Détails colis</h1>
+
+<table class="table">
+  <tbody>
+  <tr>
+    <td><strong>Entreprise: </strong>{{coli.entreprise}}</td>
+    <td><strong> Emplacement: </strong>{{coli.emplacement}}</td>
+    <td><strong>Code Article: </strong>{{coli.codeArticle}}</td>
+    <td><strong>Désignation: </strong>{{coli.designation}}</td>
+    <td><strong>Numéro Palette: </strong>{{coli.numeroPalette}}</td>
+
+  </tr>
+  <tr>
+    <td><strong>Marquage: </strong>{{coli.marquage}}</td>
+    <td><strong>Remarque:</strong> {{coli.remarque}}</td>
+    <td><strong>Date d'arrivée (aaaa-mm-jj):</strong> {{coli.arrivee}}</td>
+    <td><strong>Date de départ (aaaa-mm-jj):</strong> {{coli.depart}}</td>
+
+  </tr>
+
+  </tbody>
+</table>
+
+<button class="btn btn-primary" (click)="backEvent()">Retour</button>
+<button class="btn btn-info" (click)="modifyEvent()">Modifier</button>
+<button class="btn btn-danger" (click)="removeEvent()">Supprimer</button>
+
+<h2>Mensualités: </h2>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Mois</th>
+    <th scope="col">Nombres de jour</th>
+
+  </tr>
+  <tr>
+    <td>Total: </td>
+    <td>{{total}}</td>
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr *ngFor="let mois of enCours">
+    <td>{{mois[0]}}</td>
+    <td>{{mois[1]}}</td>
+  </tr>
+
+  </tbody>
+</table>

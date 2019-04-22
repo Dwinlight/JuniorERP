@@ -15,6 +15,44 @@
   </tbody>
 </table>
 
+<div class="list-group">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Entreprise</th>
+      <th scope="col">Emplacement</th>
+      <th scope="col">Code Article</th>
+      <th scope="col">Désignation</th>
+      <th scope="col">Marquage</th>
+      <th scope="col">N° Palette</th>
+      <th scope="col">Remarque</th>
+      <th scope="col">Date d'arrivée</th>
+      <th scope="col">Date de départ</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let coli of own; let i = index"
+    >
+      <td>{{coli.entreprise}}</td>
+      <td>{{coli.emplacement}}</td>
+      <td>{{coli.codeArticle}}</td>
+      <td>{{coli.designation}}</td>
+      <td>{{coli.marquage}}</td>
+      <td>{{coli.numeroPalette}}</td>
+      <td>{{coli.remarque}}</td>
+      <td>{{coli.arrivee}}</td>
+      <td>{{coli.depart}}</td>
+
+    </tr>
+
+    </tbody>
+  </table>
+
+
+</div>
+
 
 <button class="btn btn-primary" (click)="back()">Retour à la liste des clients</button>
 <button class="btn btn-secondary" (click)="modify()">Modifier</button>

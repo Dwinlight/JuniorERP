@@ -5,6 +5,8 @@ import {ClientService} from '../services/client.service';
 import {Router} from '@angular/router';
 import {forEach} from '@angular/router/src/utils/collection';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {ColiDTO} from '../DTOs/coliDTO';
+import {ColisService} from '../services/colis.service';
 
 @Component({
   selector: 'app-dashboard-client',
@@ -17,11 +19,13 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   clients: ClientDTO[];
   backUpClients: ClientDTO[];
   clientsSubscription: Subscription;
+  colisSubscription: Subscription;
   isCreated = false;
   isModify = false;
   clientNull: ClientDTO;
+  colis: ColiDTO[] = [];
 
-  constructor(private formBuilder: FormBuilder, private clientsService: ClientService, private  router: Router) {
+  constructor(private colisService: ColisService, private formBuilder: FormBuilder, private clientsService: ClientService, private  router: Router) {
     this.clientNull = new ClientDTO();
     this.clientNull.entreprise = '';
     this.clientNull.interlocuteur = '';
@@ -42,6 +46,13 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
       }
     );
     this.clientsService.emitClients();
+
+    this.colisSubscription = this.colisService.colisSubject.subscribe(
+      (colis: ColiDTO[]) => {
+        this.colis = colis;
+      }
+    );
+    this.colisService.emitColis();
   }
 
   onNewClient() {
@@ -51,6 +62,7 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
 
 
   onViewClient(client: ClientDTO) {
+    console.log(this.colis);
     this.index = this.clients.indexOf(client);
   }
 

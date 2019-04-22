@@ -1,7 +1,7 @@
 
-<div *ngIf="index === null && isCreated === false" class="row">
+<div *ngIf="index === null && isCreated === false && isSingle == false" class="row">
   <div class="col-xs-12">
-    <h2>Vos livres</h2>
+    <h2>Colis</h2>
     <div class="list-group">
       <table class="table">
         <thead>
@@ -20,8 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let coli of colis; let i = index"
-        >
+        <tr *ngFor="let coli of colis; let i = index" >
           <td>{{coli.entreprise}}</td>
           <td>{{coli.emplacement}}</td>
           <td>{{coli.codeArticle}}</td>
@@ -31,9 +30,7 @@
           <td>{{coli.remarque}}</td>
           <td>{{coli.arrivee}}</td>
           <td>{{coli.depart}}</td>
-
-          <button type="button" class="btn btn-warning" (click)="onModify(i)">Modifier</button>
-          <button type="button" class="btn btn-danger" (click)="onRemove(coli)">Supprimer</button>
+          <button type="button" class="btn btn-light" (click)="onViewColis(i)">Détails</button>
 
         </tr>
 
@@ -49,12 +46,14 @@
 
 
 <div *ngFor="let coli of colis; let j = index">
-  <app-ajout-modification-colis *ngIf="index===j && isModify == true" [isModify]="isModify" [colis]="coli" (backEvent)='onBackDashboard()'> </app-ajout-modification-colis>
+  <app-single-colis *ngIf="index===j && isSingle== true" [coli]="coli" (modify)="onModify(j)" (remove)="onRemove(coli)"(back)="onBackDashboard()"></app-single-colis>
+  <app-ajout-modification-colis *ngIf="index===j && isModify == true && isSingle == false" [isModify]="isModify" [colis]="coli" (backEvent)='onBackDashboard()'> </app-ajout-modification-colis>
 </div>
 
 
 
-<div *ngIf = "isCreated">
-  <app-ajout-modification-colis [isModify]="isModify" (backEvent)='onBackDashboard()' [colis]="coliNull"></app-ajout-modification-colis>
+<div *ngIf = "isCreated && isSingle == false">
+  <app-ajout-modification-colis [isModify]="isModify"  (backEvent)='onBackDashboard()' [colis]="coliNull"></app-ajout-modification-colis>
 </div>
+
 

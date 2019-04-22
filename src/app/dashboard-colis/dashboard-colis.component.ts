@@ -21,6 +21,7 @@ export class DashboardColisComponent implements OnInit {
   isModify = false;
   coliNull: ColiDTO;
   entreprises: string[][];
+  isSingle = false;
 
   constructor(private colisService: ColisService, private clientsService: ClientService, private  router: Router) {
     this.coliNull = new ColiDTO();
@@ -54,6 +55,7 @@ export class DashboardColisComponent implements OnInit {
 
   onViewColis(index: number) {
     this.index = index;
+    this.isSingle = true;
   }
 
   onRemove(coli: ColiDTO) {
@@ -62,18 +64,21 @@ export class DashboardColisComponent implements OnInit {
     }
 
     this.index = null;
+    this.isSingle = false;
   }
   onBackDashboard() {
     console.log('back');
     this.index = null;
     this.isCreated = false;
     this.isModify = false;
+    this.isSingle = false;
   }
   onModify(i: number) {
     console.log('modify');
     this.index = i;
     this.isModify = true;
     this.isCreated = false;
+    this.isSingle = false;
   }
 
   ngOnDestroy(): void {
