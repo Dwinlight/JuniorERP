@@ -10,11 +10,13 @@ export class SingleColisComponent implements OnInit {
   enCours: string[][];
   total: number;
   @Output() back = new EventEmitter();
+  @Output() remove = new EventEmitter();
+  @Output() modify = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
-    const start = '2000-12-25';
-    const end = 'N/A';
+    const start = this.coli.arrivee;
+    const end = this.coli.depart;
     this.monthCalcul(start, end);
   }
   monthCalcul(start: string, end: string) {
@@ -73,6 +75,12 @@ export class SingleColisComponent implements OnInit {
   }
   backEvent() {
     this.back.emit();
+  }
+  removeEvent(){
+    this.remove.emit();
+  }
+  modifyEvent() {
+    this.modify.emit();
   }
 
 }

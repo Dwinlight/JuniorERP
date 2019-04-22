@@ -55,7 +55,7 @@ export class DashboardColisComponent implements OnInit {
 
   onViewColis(index: number) {
     this.index = index;
-    this.isCreated = true;
+    this.isSingle = true;
   }
 
   onRemove(coli: ColiDTO) {
@@ -64,6 +64,7 @@ export class DashboardColisComponent implements OnInit {
     }
 
     this.index = null;
+    this.isSingle = false;
   }
   onBackDashboard() {
     console.log('back');
@@ -77,6 +78,7 @@ export class DashboardColisComponent implements OnInit {
     this.index = i;
     this.isModify = true;
     this.isCreated = false;
+    this.isSingle = false;
   }
 
   ngOnDestroy(): void {

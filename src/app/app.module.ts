@@ -16,12 +16,12 @@ import { DashboardColisComponent } from './dashboard-colis/dashboard-colis.compo
 import {AjoutModificationColisComponent} from './ajout-modification-colis/ajout-modification-colis.component';
 import {ColisService} from './services/colis.service';
 import { SingleColisComponent } from './dashboard-colis/single-colis/single-colis.component';
+import {AuthGuard} from './services/auth-guard.service';
 
 const appRoutes: Routes = [
-  { path: 'client', component: AjoutModificationClientComponent },
-  { path: 'clients', component: DashboardClientComponent },
-  { path: 'colis', component: DashboardColisComponent },
-  { path: 'coli', component: SingleColisComponent },
+  { path: 'client', canActivate: [AuthGuard], component: AjoutModificationClientComponent },
+  { path: 'clients', canActivate: [AuthGuard], component: DashboardClientComponent },
+  { path: 'colis', canActivate: [AuthGuard], component: DashboardColisComponent },
   { path: '', component: SigninComponent }
 ];
 
@@ -44,7 +44,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, ClientService, ColisService],
+  providers: [AuthGuard, AuthService, ClientService, ColisService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
