@@ -15,11 +15,13 @@ import { SingleClientComponent } from './dashboard-client/single-client/single-c
 import { DashboardColisComponent } from './dashboard-colis/dashboard-colis.component';
 import {AjoutModificationColisComponent} from './ajout-modification-colis/ajout-modification-colis.component';
 import {ColisService} from './services/colis.service';
+import { SingleColisComponent } from './dashboard-colis/single-colis/single-colis.component';
 
 const appRoutes: Routes = [
   { path: 'client', component: AjoutModificationClientComponent },
   { path: 'clients', component: DashboardClientComponent },
   { path: 'colis', component: DashboardColisComponent },
+  { path: 'coli', component: SingleColisComponent },
   { path: '', component: SigninComponent }
 ];
 
@@ -33,7 +35,8 @@ const appRoutes: Routes = [
     AjoutModificationColisComponent,
     DashboardClientComponent,
     DashboardColisComponent,
-    SingleClientComponent
+    SingleClientComponent,
+    SingleColisComponent
   ],
   imports: [
     BrowserModule,

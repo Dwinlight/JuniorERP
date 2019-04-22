@@ -1,5 +1,5 @@
 
-<div *ngIf="index === null && isCreated === false" class="row">
+<div *ngIf="index === null && isCreated === false && isSingle == false" class="row">
   <div class="col-xs-12">
     <h2>Colis</h2>
     <div class="list-group">
@@ -20,8 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let coli of colis; let i = index"
-        >
+        <tr *ngFor="let coli of colis; let i = index" (click)="onViewColis(i)">
           <td>{{coli.entreprise}}</td>
           <td>{{coli.emplacement}}</td>
           <td>{{coli.codeArticle}}</td>
@@ -49,12 +48,17 @@
 
 
 <div *ngFor="let coli of colis; let j = index">
-  <app-ajout-modification-colis *ngIf="index===j && isModify == true" [isModify]="isModify" [colis]="coli" (backEvent)='onBackDashboard()'> </app-ajout-modification-colis>
+  <app-single-colis *ngIf="index===j && isSingle== true" [coli]="coli" (back)="onBackDashboard()"></app-single-colis>
+  <app-ajout-modification-colis *ngIf="index===j && isModify == true && isSingle == false" [isModify]="isModify" [colis]="coli" (backEvent)='onBackDashboard()'> </app-ajout-modification-colis>
 </div>
 
 
 
-<div *ngIf = "isCreated">
+<div *ngIf = "isCreated && isSingle == false">
   <app-ajout-modification-colis [isModify]="isModify" (backEvent)='onBackDashboard()' [colis]="coliNull"></app-ajout-modification-colis>
+</div>
+
+<div>
+  <app-single-colis></app-single-colis>
 </div>
 
