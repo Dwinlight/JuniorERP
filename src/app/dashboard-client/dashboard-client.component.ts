@@ -24,7 +24,8 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
   isModify = false;
   clientNull: ClientDTO;
   colis: ColiDTO[] = [];
-
+  nbrColis: number[];
+  ok = false;
   constructor(private colisService: ColisService, private formBuilder: FormBuilder, private clientsService: ClientService, private  router: Router) {
     this.clientNull = new ClientDTO();
     this.clientNull.entreprise = '';
@@ -66,6 +67,23 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
     this.index = this.clients.indexOf(client);
   }
 
+  getNumber() {
+    this.nbrColis =  new Array(this.clients.length).fill(0);
+    for (let i = 0; i < this.colis.length; i++) {
+      console.log('ok');
+      if (this.colis[i].depart !== 'N/A') {
+        const dateString = this.colis[i].depart.split('-');
+        const departDate = new Date(+dateString[0], +dateString[1], +dateString[2]);
+        const today = new Date();
+        if (departDate > today) {
+          this.nbrColis[this.colis[i].idEntreprise]++;
+        }
+      } else {
+        this.nbrColis[this.colis[i].idEntreprise]++;
+      }
+    }
+    console.log(this.nbrColis);
+  }
   onRemove(client: ClientDTO) {
     this.clientsService.removeClient(client);
     alert('Client ' + client.entreprise + ' a bien été supprimé');
@@ -102,6 +120,7 @@ export class DashboardClientComponent implements OnInit, OnDestroy {
       }
     }
   }
+
 
   ngOnDestroy(): void {
     this.clientsSubscription.unsubscribe();

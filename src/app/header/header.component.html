@@ -1,22 +1,16 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-dark bg-primary">
   <div class="container-fluid">
-    <ul class="nav navbar-nav">
-      <li routerLinkActive="active">
-        <a routerLink="clients">Clients</a>
-      </li>
-      <li routerLinkActive="active">
-        <a routerLink="colis">Colis</a>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
+    <div class="navbar-left">
+    <a class="navbar-brand" routerLink="clients">Clients</a>
 
-      <li routerLinkActive="active">
-        <a routerLink="auth/signin" *ngIf="!isAuth">Connexion</a>
-      </li>
-      <li routerLinkActive="active">
-        <a (click)="onSignOut()"
-           *ngIf="isAuth">Déconnexion</a>
-      </li>
-    </ul>
+    <a class="navbar-brand" routerLink="colis">Colis</a>
+    </div>
+    <div class="nav navbar-nav navbar-right">
+
+      <a class="navbar-brand" routerLink="auth/signin" *ngIf="!isAuth">Connexion</a>
+
+      <a class="navbar-brand"  routerLink="auth/signin" (click)="onSignOut()" *ngIf="isAuth">Déconnexion</a>
+
+    </div>
   </div>
 </nav>

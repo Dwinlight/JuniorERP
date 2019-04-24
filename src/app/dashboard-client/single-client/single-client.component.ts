@@ -20,7 +20,7 @@ export class SingleClientComponent implements OnInit{
   @Output() removeEvent = new EventEmitter();
   @Input() colis: ColiDTO[];
   own: ColiDTO[] = [];
-
+  count = 0;
 
   constructor(private clientsService: ClientService, private  router: Router, activatedRoute: ActivatedRoute) {
   }
@@ -28,16 +28,39 @@ export class SingleClientComponent implements OnInit{
 //  }
 
   ngOnInit() {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
     for (const e of this.colis) {
       console.log('ng');
       console.log(e);
       console.log(this.client.id);
       if (+e.idEntreprise === +this.client.id) {
         this.own.push(e);
+        const g = e.arrivee.split('-');
+        const arr = new Date(e.arrivee);
+        // const arr = new Date(g[0], g[1], g[2]);
+        console.log('arr ' + e.arrivee);
+        console.log(g);
+        console.log(arr);
+        console.log(today);
+        if (today > arr) {
+          if (e.depart !== 'N/A') {
+            const j = e.depart.split('-');
+            const departDate = new Date(+j[0], +j[1] , +j[2]);
+            if (departDate > today) {
+              this.count++;
+              console.log('present1');
+            }
+          } else {
+              this.count++;
+              console.log('present2');
+          }
+        }
       }
     }
-    console.log('iniiiiit');
-    console.log(this.own);
+
 
   }
   back() {
@@ -47,7 +70,7 @@ export class SingleClientComponent implements OnInit{
     console.log('ici');
     this.modifyEvent.emit();
   }
-  remove(){
+  remove() {
     if (confirm('Voulez-vous vraiment supprimer ce client et tous les colis lui étant liés ?')) {
       this.removeEvent.emit();
     }
